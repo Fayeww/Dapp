@@ -1,7 +1,8 @@
 import FeedPost from "../components/FeedPost";
 import {
-  PublicationMainFocus,
-  PublicationSortCriteria,
+  //PublicationMainFocus,
+  //PublicationSortCriteria,
+  ExplorePublicationsOrderByType,
   useExplorePublicationsQuery,
 } from "../graphql/generated";
 import styles from "../styles/Home.module.css";
@@ -10,7 +11,7 @@ export default function Home() {
   const { isLoading, error, data } = useExplorePublicationsQuery(
     {
       request: {
-        sortCriteria: PublicationSortCriteria.Latest,
+        orderBy: ExplorePublicationsOrderByType.Latest,
       },
     },
     {

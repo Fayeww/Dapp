@@ -1,7 +1,7 @@
-mutation createFollowTypedData($request: FollowRequest!) {
+mutation CreateFollowTypedData($request: FollowRequest!) {
   createFollowTypedData(request: $request) {
-    id
     expiresAt
+    id
     typedData {
       domain {
         name
@@ -10,7 +10,7 @@ mutation createFollowTypedData($request: FollowRequest!) {
         verifyingContract
       }
       types {
-        FollowWithSig {
+        Follow {
           name
           type
         }
@@ -18,9 +18,23 @@ mutation createFollowTypedData($request: FollowRequest!) {
       value {
         nonce
         deadline
-        profileIds
+        followerProfileId
+        idsOfProfilesToFollow
+        followTokenIds
         datas
       }
+    }
+  }
+}
+
+mutation Follow($request: FollowLensManagerRequest!) {
+  follow(request: $request) {
+    ... on RelaySuccess {
+      txHash
+      txId
+    }
+    ... on LensProfileManagerRelayError {
+      reason
     }
   }
 }

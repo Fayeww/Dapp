@@ -18,32 +18,33 @@ export default function FeedPost({ publication }: Props) {
         <MediaRenderer
           // @ts-ignore
           src={publication?.profile?.picture?.original?.url || ""}
-          alt={publication.profile.name || publication.profile.handle}
+          alt={publication.by.handle?.localName || publication.by.handle?.fullHandle}  //大改特改
+          //alt={publication.profile.name || publication.profile.handle}
           className={styles.feedPostProfilePicture}
         />
 
         {/* Author profile Name */}
         <Link
-          href={`/profile/${publication.profile.handle}`}
+          href={`/profile/${publication.by.handle?.fullHandle}`}
           className={styles.feedPostProfileName}
         >
-          {publication.profile.name || publication.profile.handle}
+          {publication.by.handle?.localName || publication.by.handle?.fullHandle}
         </Link>
       </div>
 
       <div className={styles.feedPostContent}>
         {/* Name of the post */}
         <h3 className={styles.feedPostContentTitle}>
-          {publication.metadata.name}
+          {publication.metadata.tags}
         </h3>
 
         {/* Description of the post */}
         <p className={styles.feedPostContentDescription}>
-          {publication.metadata.content}
+        {'__typename' in publication.metadata && publication.metadata.__typename === 'ArticleMetadataV3' ? publication.metadata.content : null}
         </p>
 
         {/* Image / media of the post if there is one */}
-        {(publication.metadata.image ||
+        {/*(publication.metadata.image ||
           publication.metadata.media?.length > 0) && (
           <MediaRenderer
             src={
@@ -51,15 +52,20 @@ export default function FeedPost({ publication }: Props) {
               publication.metadata.media[0].original.url
             }
             alt={publication.metadata.name || ""}
+            className={styles.feedPostContentImage*/}
+        {'__typename' in publication.metadata && publication.metadata.__typename === 'ImageMetadataV3' && publication.metadata.asset?.image && (
+          <MediaRenderer
+            src={publication.metadata.asset.image.raw.uri}
+            alt={"Image for " + publication.by?.handle?.fullHandle || ""}
             className={styles.feedPostContentImage}
           />
         )}
       </div>
 
       <div className={styles.feedPostFooter}>
-        <p>{publication.stats.totalAmountOfCollects} Collects</p>
-        <p>{publication.stats.totalAmountOfComments} Comments</p>
-        <p>{publication.stats.totalAmountOfMirrors} Mirrors</p>
+        <p>{publication.stats.quotes} Collects</p>
+        <p>{publication.stats.comments} Comments</p>
+        <p>{publication.stats.mirrors} Mirrors</p>
       </div>
     </div>
   );

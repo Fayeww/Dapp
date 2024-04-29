@@ -1,14 +1,17 @@
 import { useMutation } from "@tanstack/react-query";
 import { useSDK, useStorageUpload } from "@thirdweb-dev/react";
 import {
-  PublicationMainFocus,
-  useCreatePostTypedDataMutation,
+  PublicationMetadataMainFocusType,
+  useCreateOnchainPostTypedDataMutation,
 } from "../graphql/generated";
 import useLensUser from "./auth/useLensUser";
 import { signTypedDataWithOmmittedTypename, splitSignature } from "./helpers";
 import { v4 as uuidv4 } from "uuid";
 import { LENS_CONTRACT_ABI, LENS_CONTRACT_ADDRESS } from "../const/contracts";
 import useLogin from "./auth/useLogin";
+import { CreateOnchainPostTypedDataDocument, OnchainPostRequest } from '../graphql/generated';
+
+
 
 type CreatePostArgs = {
   image: File;
@@ -17,12 +20,16 @@ type CreatePostArgs = {
   content: string;
 };
 
+
+
 export function useCreatePost() {
-  const { mutateAsync: requestTypedData } = useCreatePostTypedDataMutation();
+  const { mutateAsync: requestTypedData } = useCreateOnchainPostTypedDataMutation();
   const { mutateAsync: uploadToIpfs } = useStorageUpload();
   const { profileQuery } = useLensUser();
   const sdk = useSDK();
   const { mutateAsync: loginUser } = useLogin();
+  
+
 
   async function createPost({
     image,
@@ -43,7 +50,7 @@ export function useCreatePost() {
     // This is going to be a Object which contains the image field as well
     const postMetadata = {
       version: "2.0.0",
-      mainContentFocus: PublicationMainFocus.TextOnly,
+      mainContentFocus: PublicationMetadataMainFocusType.TextOnly,
       metadata_id: uuidv4(),
       description: description,
       locale: "en-US",
@@ -65,20 +72,21 @@ export function useCreatePost() {
     // 1. Ask Lens to give us the typed data
     const typedData = await requestTypedData({
       request: {
-        collectModule: {
-          freeCollectModule: {
-            followerOnly: false,
-          },
-        },
+        //openActionModules: {
+          
+          //SimpleCollectOpenActionModule: {
+            //followerOnly: false,
+          //},
+        //},
         referenceModule: {
           followerOnlyReferenceModule: false,
         },
         contentURI: postMetadataIpfsUrl,
-        profileId: profileQuery.data?.defaultProfile?.id,
+        //profileId: profileQuery.data?.defaultProfile?.id,
       },
     });
 
-    const { domain, types, value } = typedData.createPostTypedData.typedData;
+    const { domain, types, value } = typedData.createOnchainPostTypedData.typedData;
 
     if (!sdk) return;
 
@@ -100,20 +108,20 @@ export function useCreatePost() {
 
     // Destructure the stuff we need out of the typedData.value field
     const {
-      collectModule,
-      collectModuleInitData,
+      actionModules,
+      actionModulesInitDatas,
       contentURI,
       deadline,
       profileId,
       referenceModule,
       referenceModuleInitData,
-    } = typedData.createPostTypedData.typedData.value;
+    } = typedData.createOnchainPostTypedData.typedData.value;
 
     const result = await lensHubContract.call("postWithSig", {
       profileId: profileId,
       contentURI: contentURI,
-      collectModule,
-      collectModuleInitData,
+      actionModules,
+      actionModulesInitDatas,
       referenceModule,
       referenceModuleInitData,
       sig: {

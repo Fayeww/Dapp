@@ -26,7 +26,7 @@ export default function ProfilePage({}: Props) {
   } = useProfileQuery(
     {
       request: {
-        handle: id,
+        forHandle: id,
       },
     },
     {
@@ -41,7 +41,7 @@ export default function ProfilePage({}: Props) {
   } = usePublicationsQuery(
     {
       request: {
-        profileId: profileData?.profile?.id,
+        where: profileData?.profile?.id,
       },
     },
     {

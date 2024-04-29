@@ -8,7 +8,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  background-color: darkslategray;
+  background-color: rgb(4, 236, 244);
   border-bottom: 1px solid white;
   z-index: 99999;
 }

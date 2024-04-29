@@ -10,7 +10,7 @@ export default async function generateChallenge(address: string) {
     ChallengeDocument,
     {
       request: {
-        address,
+        signedBy: address,
       },
     }
   )();

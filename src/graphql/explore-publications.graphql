@@ -1,19 +1,17 @@
 query ExplorePublications($request: ExplorePublicationRequest!) {
   explorePublications(request: $request) {
     items {
-      __typename
       ... on Post {
         ...PostFields
       }
-      ... on Comment {
-        ...CommentFields
-      }
-      ... on Mirror {
-        ...MirrorFields
+
+      ... on Quote {
+        ...QuoteFields
       }
     }
     pageInfo {
-      ...CommonPaginatedResultInfoFields
+      prev
+      next
     }
   }
 }

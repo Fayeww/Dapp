@@ -23,7 +23,7 @@ export default function useLogin() {
     // 3. Send the signed challenge to the Lens API
     const { authenticate } = await sendSignedMessage({
       request: {
-        address,
+        id: address,
         signature,
       },
     });

@@ -21,7 +21,7 @@ export function useFollow() {
       request: {
         follow: [
           {
-            profile: userId,
+            profileId: userId,
           },
         ],
       },

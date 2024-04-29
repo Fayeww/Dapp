@@ -30,12 +30,12 @@ export const fetcher = <TData, TVariables>(
   return async () => {
     const token = typeof window !== "undefined" ? await getAccessToken() : null;
 
-    const res = await fetch("https://api.lens.dev/", {
+    const res = await fetch("https://api-v2.lens.dev/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         ...options,
-        "x-access-token": token ? token : "",
+        "x-access-token": token ? token : "", //if is , use it, or return empty string
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({

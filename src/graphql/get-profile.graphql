@@ -1,4 +1,4 @@
-query profile($request: SingleProfileQueryRequest!) {
+query Profile($request: ProfileRequest!) {
   profile(request: $request) {
     ...ProfileFields
   }
