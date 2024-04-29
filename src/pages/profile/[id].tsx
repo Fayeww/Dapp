@@ -67,7 +67,7 @@ export default function ProfilePage({}: Props) {
             // @ts-ignore
             src={profileData?.profile?.coverPicture?.original?.url || ""}
             alt={
-              profileData?.profile?.name || profileData?.profile?.handle || ""
+              profileData?.profile.id || profileData?.profile?.handle || ""
             }
             className={styles.coverImageContainer}
           />
@@ -78,25 +78,25 @@ export default function ProfilePage({}: Props) {
           <MediaRenderer
             // @ts-ignore
             src={profileData.profile.picture.original.url}
-            alt={profileData.profile.name || profileData.profile.handle || ""}
+            alt={profileData.profile?.id || profileData.profile.handle || ""}
             className={styles.profilePictureContainer}
           />
         )}
 
         {/* Profile Name */}
         <h1 className={styles.profileName}>
-          {profileData?.profile?.name || "Anon User"}
+          {profileData?.profile?.id || "Anon User"}
         </h1>
         {/* Profile Handle */}
         <p className={styles.profileHandle}>
-          @{profileData?.profile?.handle || "anonuser"}
+          @{profileData?.profile?.handle?.fullHandle || "anonuser"}
         </p>
 
         {/* Profile Description */}
-        <p className={styles.profileDescription}>{profileData?.profile?.bio}</p>
+        <p className={styles.profileDescription}>{profileData?.profile?.metadata?.bio}</p>
 
         <p className={styles.followerCount}>
-          {profileData?.profile?.stats.totalFollowers} {" Followers"}
+          {profileData?.profile?.stats.followers} {" Followers"}
         </p>
 
         <Web3Button

@@ -6,6 +6,10 @@ import styles from "../styles/FeedPost.module.css";
 
 type Props = {
   publication: ExplorePublicationsQuery["explorePublications"]["items"][0];
+  quoteOn?: {                                           //这个quoteOn真的OK吗？
+    __typename?: 'Comment' | 'Post' | 'Quote';
+    id: any;
+  };
 };
 
 export default function FeedPost({ publication }: Props) {
@@ -40,6 +44,7 @@ export default function FeedPost({ publication }: Props) {
 
         {/* Description of the post */}
         <p className={styles.feedPostContentDescription}>
+        
         {'__typename' in publication.metadata && publication.metadata.__typename === 'ArticleMetadataV3' ? publication.metadata.content : null}
         </p>
 
