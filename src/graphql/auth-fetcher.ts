@@ -2,7 +2,7 @@ import { isTokenExpired, readAccessToken } from "../lib/auth/helpers";
 import refreshAccessToken from "../lib/auth/refreshAccessToken";
 
 export const fetcher = <TData, TVariables>(
-  query: string,
+  query: String,
   variables?: TVariables,
   options?: RequestInit["headers"]
 ): (() => Promise<TData>) => {

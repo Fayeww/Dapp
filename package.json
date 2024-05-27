@@ -10,6 +10,7 @@
     "codegen": "graphql-codegen"
   },
   "dependencies": {
+    "@apollo/client": "^3.5.10",
     "@next/font": "13.0.7",
     "@tanstack/react-query": "^4.20.4",
     "@thirdweb-dev/react": "^3.6.9-nightly-5862c55",
@@ -21,11 +22,14 @@
     "eslint": "8.30.0",
     "eslint-config-next": "13.0.7",
     "ethers": "^5.7.2",
+    "file-loader": "^6.2.0",
     "graphql": "^16.6.0",
     "next": "13.0.7",
+    "node-fetch": "^3.3.2",
     "omit-deep": "^0.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "subscriptions-transport-ws": "0.9.19",
     "typescript": "4.9.4",
     "uuidv4": "^6.2.13"
   },

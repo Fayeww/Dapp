@@ -1,4 +1,5 @@
 import { useMutation, useQuery, UseMutationOptions, UseQueryOptions } from '@tanstack/react-query';
+import { gql } from '@apollo/client';
 import { fetcher } from './auth-fetcher';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -1988,6 +1989,13 @@ export type InternalCuratedUpdateRequest = {
   secret: Scalars['String'];
 };
 
+export type InternalForYouFeedRequest = {
+  d: Scalars['DateTime'];
+  n: Scalars['Int'];
+  p?: InputMaybe<Scalars['ProfileId']>;
+  secret: Scalars['String'];
+};
+
 export type InternalInvitesRequest = {
   p: Scalars['ProfileId'];
   secret: Scalars['String'];
@@ -2788,6 +2796,7 @@ export type Mutation = {
   internalBoostProfile: Scalars['Int'];
   internalClaim?: Maybe<Scalars['Void']>;
   internalCuratedUpdate?: Maybe<Scalars['Void']>;
+  internalForYouFeed?: Maybe<Scalars['Void']>;
   internalMintHandleAndProfile: Scalars['TxHash'];
   internalNftIndex?: Maybe<Scalars['Void']>;
   internalNftVerify?: Maybe<Scalars['Void']>;
@@ -3071,6 +3080,11 @@ export type MutationInternalClaimArgs = {
 
 export type MutationInternalCuratedUpdateArgs = {
   request: InternalCuratedUpdateRequest;
+};
+
+
+export type MutationInternalForYouFeedArgs = {
+  request: InternalForYouFeedRequest;
 };
 
 
@@ -6018,7 +6032,7 @@ export type ChallengeQueryVariables = Exact<{
 }>;
 
 
-export type ChallengeQuery = { __typename?: 'Query', challenge: { __typename?: 'AuthChallengeResult', text: string } };
+export type ChallengeQuery = { __typename?: 'Query', challenge: { __typename?: 'AuthChallengeResult', id: any, text: string } };
 
 export type NetworkAddressFieldsFragment = { __typename?: 'NetworkAddress', address: any, chainId: any };
 
@@ -6996,7 +7010,7 @@ export const CommentFieldsFragmentDoc = `
   }
 }
     `;
-export const AuthenticateDocument = `
+export const AuthenticateDocument = gql`
     mutation authenticate($request: SignedAuthChallenge!) {
   authenticate(request: $request) {
     accessToken
@@ -7004,7 +7018,7 @@ export const AuthenticateDocument = `
   }
 }
     `;
-export const useAuthenticateMutation = <
+    `export const useAuthenticateMutation = <
       TError = unknown,
       TContext = unknown
     >(options?: UseMutationOptions<AuthenticateMutation, TError, AuthenticateMutationVariables, TContext>) =>
@@ -7012,15 +7026,19 @@ export const useAuthenticateMutation = <
       ['authenticate'],
       (variables?: AuthenticateMutationVariables) => fetcher<AuthenticateMutation, AuthenticateMutationVariables>(AuthenticateDocument, variables)(),
       options
-    );
-export const ChallengeDocument = `
+    );`
+
+export const ChallengeDocument = gql`
     query Challenge($request: ChallengeRequest!) {
-  challenge(request: $request) {
-    text
-  }
-}
+      challenge(request: $request) {
+        id
+        text
+      }
+    }
     `;
-export const useChallengeQuery = <
+    
+
+    `export const useChallengeQuery = <
       TData = ChallengeQuery,
       TError = unknown
     >(
@@ -7031,7 +7049,7 @@ export const useChallengeQuery = <
       ['Challenge', variables],
       fetcher<ChallengeQuery, ChallengeQueryVariables>(ChallengeDocument, variables),
       options
-    );
+    );`
 export const ExplorePublicationsDocument = `
     query ExplorePublications($request: ExplorePublicationRequest!) {
   explorePublications(request: $request) {

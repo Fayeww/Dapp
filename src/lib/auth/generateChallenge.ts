@@ -3,15 +3,18 @@ import {
   ChallengeQuery,
   ChallengeQueryVariables,
   ChallengeDocument,
+  ChallengeRequest,
 } from "../../graphql/generated";
+import { apolloClient } from './apollo-client';
 
-export default async function generateChallenge(address: string) {
-  return await fetcher<ChallengeQuery, ChallengeQueryVariables>(
-    ChallengeDocument,
-    {
-      request: {
-        signedBy: address,
-      },
-    }
-  )();
-}
+
+export const generateChallenge = async (request: ChallengeRequest) => {
+  const result = await apolloClient.query({
+    query: ChallengeDocument,
+    variables: {
+      request,
+    },
+  });
+
+  return result.data.challenge;
+};

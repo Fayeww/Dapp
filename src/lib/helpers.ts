@@ -26,3 +26,7 @@ export async function signTypedDataWithOmmittedTypename(
 export function splitSignature(signature: string) {
   return ethers.utils.splitSignature(signature);
 }
+
+export const omit = (object: any, name: string) => {
+  return omitDeep(object, [name]);
+};

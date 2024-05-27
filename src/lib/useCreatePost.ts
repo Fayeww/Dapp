@@ -8,8 +8,10 @@ import useLensUser from "./auth/useLensUser";
 import { signTypedDataWithOmmittedTypename, splitSignature } from "./helpers";
 import { v4 as uuidv4 } from "uuid";
 import { LENS_CONTRACT_ABI, LENS_CONTRACT_ADDRESS } from "../const/contracts";
-import useLogin from "./auth/useLogin";
+import {useLogin} from "./auth/login";
 import { CreateOnchainPostTypedDataDocument, OnchainPostRequest } from '../graphql/generated';
+import { AddressSchema } from "@thirdweb-dev/sdk/solana";
+import { getAddressFromSigner, signText } from './auth/ethers.service';
 
 
 
@@ -22,13 +24,15 @@ type CreatePostArgs = {
 
 
 
+
 export function useCreatePost() {
   const { mutateAsync: requestTypedData } = useCreateOnchainPostTypedDataMutation();
   const { mutateAsync: uploadToIpfs } = useStorageUpload();
   const { profileQuery } = useLensUser();
   const sdk = useSDK();
-  const { mutateAsync: loginUser } = useLogin();
-  
+  //const { mutateAsync: loginUser } = useLoginMutation();
+  const address = getAddressFromSigner();
+
 
 
   async function createPost({
@@ -39,7 +43,7 @@ export function useCreatePost() {
   }: CreatePostArgs) {
     console.log("createPost", image, title, description, content);
     // 0. Login
-    await loginUser();
+    await useLogin(address);
 
     // 0. Upload the image to IPFS
     const imageIpfsUrl = (await uploadToIpfs({ data: [image] }))[0];

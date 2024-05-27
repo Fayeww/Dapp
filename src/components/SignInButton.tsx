@@ -8,7 +8,7 @@ import {
 } from "@thirdweb-dev/react";
 import React from "react";
 import useLensUser from "../lib/auth/useLensUser";
-import useLogin from "../lib/auth/useLogin";
+import {useLogin} from "../lib/auth/login";
 
 type Props = {};
 
@@ -60,7 +60,7 @@ export default function SignInButton({}: Props) {
         <MediaRenderer
           // @ts-ignore
           src={profileQuery?.data?.defaultProfile?.picture?.original?.url || ""}
-          alt={profileQuery.data.defaultProfile.name || ""}
+          alt={profileQuery.data.defaultProfile.id || ""}     //把一个.name改成了.id
           style={{
             width: 48,
             height: 48,

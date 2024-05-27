@@ -2,18 +2,22 @@ import { useMutation } from "@tanstack/react-query";
 import { useAddress, useSDK } from "@thirdweb-dev/react";
 import { LENS_CONTRACT_ABI, LENS_CONTRACT_ADDRESS } from "../const/contracts";
 import { useCreateFollowTypedDataMutation } from "../graphql/generated";
-import useLogin from "./auth/useLogin";
+import {useLogin} from "./auth/login";
 import { signTypedDataWithOmmittedTypename, splitSignature } from "./helpers";
+import { getAddressFromSigner, signText } from './auth/ethers.service';
+
 
 export function useFollow() {
   const { mutateAsync: requestTypedData } = useCreateFollowTypedDataMutation();
   const sdk = useSDK();
   const address = useAddress();
-  const { mutateAsync: loginUser } = useLogin();
+  //const address = getAddressFromSigner(); 
+
+  //const { mutateAsync: loginUser } = useLogin(); 
 
   async function follow(userId: string) {
     // 0. Login
-    await loginUser();
+    await useLogin(address);
 
     // 1. Use the auto generated mutation called "usecreateFollowTypedData"
     // to get the typed data for the user to sign
